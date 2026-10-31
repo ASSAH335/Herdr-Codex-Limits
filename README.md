@@ -8,7 +8,19 @@
 - macOS, Python 3 по пути `/usr/bin/python3` и установленный Codex CLI (`codex` доступен в PATH приложения Herdr).
 - В Codex выполнен вход в аккаунт с доступными лимитами подписки. Скрипт запрашивает лимиты через `codex app-server`.
 
-## Установка
+## Автоматическая установка через Git
+
+Для macOS. Установите Herdr Desktop и Codex CLI, войдите в Codex и откройте Herdr. Затем выполните:
+
+```sh
+git clone https://github.com/ASSAH335/Herdr-Codex-Limits.git
+cd Herdr-Codex-Limits
+sh install.sh
+```
+
+Скрипт сохранит ранее установленные файлы `usage-tabs` и `usage-layout.json` в резервных копиях, установит мод, проверит его и включит оформление. Если Herdr закрыт, включите оформление после запуска командой `herdr-app do layout.switch '{"name":"usage-layout"}'`. Для установки без переключения оформления выполните `sh install.sh --no-activate`.
+
+## Установка вручную
 
 1. Распакуйте ZIP двойным щелчком в Finder.
 2. В Finder нажмите Cmd+Shift+G, введите `~/.config/herdr-app/` и нажмите Enter. Откройте папку `mods`.
