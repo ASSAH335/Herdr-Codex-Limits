@@ -8,13 +8,13 @@ For example, `99% 16:38 · 74% 3d 21h` means 99% of the five-hour allowance rema
 
 ## Requirements
 
-- macOS and Herdr Desktop with mod support. This mod is based on the built-in tabs mod available on October 30, 2026.
-- Python 3 at `/usr/bin/python3` and the Codex CLI available as `codex` in Herdr's PATH.
+- macOS or Windows and Herdr Desktop with mod support. This mod is based on the built-in tabs mod available on October 30, 2026.
+- Python 3 (`/usr/bin/python3` on macOS, or `py.exe` / `python.exe` on Windows) and the Codex CLI available as `codex` in Herdr's PATH. On Windows, restart Herdr after installing Python or changing PATH.
 - A signed-in Codex account that reports both usage limits. The mod reads limits through `codex app-server`.
 
-Windows is not currently supported.
+The Windows implementation has not yet been verified on a Windows machine.
 
-## Automatic installation
+## Automatic installation on macOS
 
 Install Herdr Desktop and the Codex CLI, sign in to Codex, and open Herdr. Then run:
 
@@ -32,7 +32,19 @@ herdr-app do layout.switch '{"name":"usage-layout"}'
 
 Open a tab with Codex. The limits appear at the right of the tab bar when the data is available.
 
-## Manual installation
+## Automatic installation on Windows
+
+Install Herdr Desktop, Codex CLI, Git, and Python 3. Make sure `herdr-app`, `codex`, and either `py` or `python` work in PowerShell, sign in to Codex, and open Herdr. Then run:
+
+```powershell
+git clone https://github.com/ASSAH335/Herdr-Codex-Limits.git
+cd Herdr-Codex-Limits
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+The installer backs up existing files, installs and checks the mod, and activates the layout. To install without activating it, append `-NoActivate` to the last command. If Herdr is closed, start it and run `herdr-app do layout.switch --name usage-layout`. The installation directory is `%USERPROFILE%\.config\herdr-app` by default, or `HERDR_APP_HOME` if set.
+
+## Manual installation on macOS
 
 1. Download and extract the repository ZIP.
 2. In Finder, press **Cmd+Shift+G**, enter `~/.config/herdr-app/`, and open the `mods` folder.
@@ -49,12 +61,14 @@ Open a tab with Codex. The limits appear at the right of the tab bar when the da
 
 ## Troubleshooting
 
-Check whether Codex returns usage data, and inspect Herdr for errors:
+On macOS, check whether Codex returns usage data, and inspect Herdr for errors:
 
 ```sh
 /usr/bin/python3 -B "$HOME/.config/herdr-app/mods/usage-tabs/usage.py"
 herdr-app status
 ```
+
+On Windows, run `py -3 -B "$HOME\.config\herdr-app\mods\usage-tabs\usage.py"` (or use your `HERDR_APP_HOME` path) and `herdr-app status` in PowerShell.
 
 If the first command produces no output, check that `codex` is available, that you are signed in, and that both limits are available. Errors in `herdr-app status` may indicate a compatibility issue with your Herdr version. This mod displays Codex limits; it does not support Claude or other agents.
 

@@ -23,8 +23,17 @@ export default class Tabs extends View {
   refreshUsage(cx) {
     cx.spawn(async (cx) => {
       try {
-        const result = await exec("/usr/bin/python3", ["-B", `${appHome()}/mods/usage-tabs/usage.py`]);
-        this.usage = result.stdout.trim();
+        const script = `${appHome()}/mods/usage-tabs/usage.py`;
+        const commands = window()?.platform === "windows"
+          ? [["py.exe", ["-3", "-X", "utf8", "-B", script]], ["python.exe", ["-X", "utf8", "-B", script]]]
+          : [["/usr/bin/python3", ["-B", script]]];
+        this.usage = "";
+        for (const [command, args] of commands) {
+          try {
+            const result = await exec(command, args);
+            if (result.code === 0 && result.stdout.trim()) { this.usage = result.stdout.trim(); break; }
+          } catch (_) { /* Try the next Python launcher. */ }
+        }
       } catch (_) { this.usage = ""; }
       cx.notify();
     });
